@@ -1,7 +1,8 @@
 use cgmath::*;
 use winit::event::*;
 use winit::dpi::PhysicalPosition;
-use std::time::Instant
+use winit::keyboard::KeyCode;
+use std::time::Duration;
 use std::f32::consts::FRAC_PI_2;
 
 #[rustfmt::skip]
@@ -14,12 +15,11 @@ pub const OPENGL_TO_WGPU_MATRIX: cgmath::Matrix4<f32> = cgmath::Matrix4::from_co
 
 const SAFE_FRAC_PI_2: f32 = FRAC_PI_2 - 0.0001;
 
-
 #[derive(Debug)]
 struct Camera {
     pub position: Point3<f32>,
-    yaw: Rad<f32>
-    pitch: Rad<f32>
+    yaw: Rad<f32>,
+    pitch: Rad<f32>,
 }
 
 impl Camera {
@@ -119,30 +119,31 @@ impl CameraController {
         }
     }
 
-    pub fn process_keyboard(&mut self, key: VirtualKeyCode, state: ElementState) -> bool{
+    // right now we are hardcoding the movement keys but we can have it come from some mapping/config
+    pub fn process_keyboard(&mut self, key: KeyCode, state: ElementState) -> bool{
         let amount = if state == ElementState::Pressed { 1.0 } else { 0.0 };
         match key {
-            VirtualKeyCode::W | VirtualKeyCode::Up => {
+            KeyCode::KeyW => {
                 self.amount_forward = amount;
                 true
             }
-            VirtualKeyCode::S | VirtualKeyCode::Down => {
+            KeyCode::KeyS => {
                 self.amount_backward = amount;
                 true
             }
-            VirtualKeyCode::A | VirtualKeyCode::Left => {
+            KeyCode::KeyA => {
                 self.amount_left = amount;
                 true
             }
-            VirtualKeyCode::D | VirtualKeyCode::Right => {
+            KeyCode::KeyD => {
                 self.amount_right = amount;
                 true
             }
-            VirtualKeyCode::Space => {
+            KeyCode::Space => {
                 self.amount_up = amount;
                 true
             }
-            VirtualKeyCode::LShift => {
+            KeyCode::ControlLeft => {
                 self.amount_down = amount;
                 true
             }
