@@ -17,7 +17,31 @@ use winit::{event::*,event_loop::EventLoop, keyboard::PhysicalKey, window::Windo
 const NUM_INSTANCES_PER_ROW: u32 = 10;
 
 pub struct State {
-  // TODO 
+  window: Arc<Window>,
+  surface: wgpu::Surface<`static>,
+  device: wgpu::Device,
+  queue: wgpu::Queue,
+  config: wgpu::SurfaceConfiguration,
+  render_pipeline: wgpu::RenderPipeline,
+  obj_model: model::Model,
+  camera: camera::Camera,
+  projection: camera::Projection,
+  camera_controller: Camera::CameraController,
+  camera_uniform: CameraUniform,
+  camera_buffer: wgpu::Buffer,
+  camera_bind_group: wgpu::BindGroup,
+  instances: Vec<Instance>,
+  #[allow(dead_code)]
+  instance_buffer: wgpu::Buffer,
+  depth_texture: texture::Texture,
+  is_surface_configured: bool,
+  light_uniform: LightUniform,
+  light_buffer: wgpu::Buffer,
+  light_bind_group: wgpu::BindGroup,
+  light_render_pipeline: wgpu::RenderPipeline,
+  #[allow(dead_code)]
+  debug_material: model::material,
+  mouse_pressed: bool
 }
 
 pub struct App {
@@ -123,4 +147,12 @@ impl ApplicationHandler<State> for App {
     } => state.handle_key(event_loop,code, key_state.is_pressed()),
     _ => {}
   }
+}
+
+pub fn run() -> anyhow::Result<()> {
+  // we should use a better logger, they set up some outdated logger ting
+  let event_loop = EventLoop::with_user_event().build()?;
+  let mut app = App::new();
+  event_loop.run_app(&mut app)?;
+  Ok(())
 }
