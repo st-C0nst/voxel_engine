@@ -1,4 +1,5 @@
 mod model;
+mod texture;
 mod player_camera;
 use player_camera as camera;
 
@@ -157,6 +158,9 @@ pub struct State {
   #[allow(dead_code)]
   debug_material: model::Material,
   mouse_pressed: bool
+}
+
+impl State {
 }
 
 pub struct App {
