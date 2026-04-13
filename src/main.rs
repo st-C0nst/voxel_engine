@@ -1,5 +1,4 @@
-
 fn main() {
-    // Example usage of the player controller
-    print!("Hello, world!")
+  // Example usage of the player controller
+  print!("Hello, world!")
 }
