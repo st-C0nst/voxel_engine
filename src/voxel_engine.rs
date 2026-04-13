@@ -1,6 +1,10 @@
 // Voxel engine code - work in progress
 // This file contains incomplete voxel/chunk code that will be implemented later
 
+// Greedy mesh regions of chunk, async on the cpu
+// Chunks marked as dirty
+// gpu culling, indirect calls, mega buffer on gpu
+
 pub const CHUNK_SIZE: usize = 16;
 pub const CHUNK_VOLUME: usize = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
 
