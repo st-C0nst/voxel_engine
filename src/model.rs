@@ -22,23 +22,31 @@ impl Vertex for ModelVertex {
     wgpu::VertexBufferLayout {
       array_stride: mem::size_of::<ModelVertex>() as wgpu::BufferAddress,
       step_mode: wgpu::VertexStepMode::Vertex,
+      // Attributes per vertex
       attributes: &[
+        // Position data of vertex
         wgpu::VertexAttribute {
           offset: 0,
           shader_location: 0,
           format: wgpu::VertexFormat::Float32x3,
         },
+        // tex coords (uv texture coords)
         wgpu::VertexAttribute {
           offset: mem::size_of::<[f32; 3]>() as wgpu::BufferAddress,
           shader_location: 1,
           format: wgpu::VertexFormat::Float32x2,
         },
+        // Normal vector, per vertex normal for a model
         wgpu::VertexAttribute {
           offset: mem::size_of::<[f32; 5]>() as wgpu::BufferAddress,
           shader_location: 2,
           format: wgpu::VertexFormat::Float32x3,
         },
-        // Tangent and bitangent
+        // Tangent and bitangent, these are vectors that work with normal vector
+        // Tangent is +U or x of the uv coords of texture. BI-tangent is +V,
+        // with the normal vector it forms a basis vector. normal map is defined in the
+        // uv plane of the texture and thus we need to convert these normals to the
+        // current world coords
         wgpu::VertexAttribute {
           offset: mem::size_of::<[f32; 8]>() as wgpu::BufferAddress,
           shader_location: 3,
@@ -165,6 +173,7 @@ impl<'a, 'b> DrawModel<'b> for wgpu::RenderPass<'a>
 where
   'b: 'a,
 {
+  // TODO does it really make sense to draw instanced for a single instance
   fn draw_mesh(
     &mut self,
     mesh: &'b Mesh,
